@@ -192,7 +192,6 @@ def on_scroll(x, y, dx, dy):
     else:
         record('scroll up {0} {1}'.format(dx, dy))
 
-
 def on_release(key):
     global stopped
     print('released mouse')
@@ -226,7 +225,6 @@ def recMode():
     with MouseListener(on_click=on_click, on_scroll=on_scroll, on_move=on_move) as listener:
         with KeyboardListener(on_press=on_press, on_release=on_release) as listener:
             listener.join()
-
 
 def delMode():
     print('Deleting file {}'.format(filename))
