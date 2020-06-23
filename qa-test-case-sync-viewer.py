@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from api.testcollabapi import TestCollabApiService
@@ -60,9 +60,12 @@ class Ui_MainWindow(object):
         self.pteAcceptanceCriteria = QtWidgets.QPlainTextEdit(self.tabTestCaseEditor)
         self.pteAcceptanceCriteria.setGeometry(QtCore.QRect(360, 410, 341, 51))
         self.pteAcceptanceCriteria.setObjectName("pteAcceptanceCriteria")
+
+        # Button sync testlink
         self.pbSyncTestlink = QtWidgets.QPushButton(self.tabTestCaseEditor)
         self.pbSyncTestlink.setGeometry(QtCore.QRect(120, 470, 91, 25))
         self.pbSyncTestlink.setObjectName("pbSyncTestlink")
+        self.pbSyncTestlink.clicked.connect(self.updateTestlink)
 
         # Button Sync Testcollab
         self.pbSyncTestCollab = QtWidgets.QPushButton(self.tabTestCaseEditor)
@@ -105,7 +108,7 @@ class Ui_MainWindow(object):
         self.pbSaveSettings = QtWidgets.QPushButton(self.tabSettings)
         self.pbSaveSettings.setGeometry(QtCore.QRect(100, 460, 80, 25))
         self.pbSaveSettings.setObjectName("pbSaveSettings")
-        self.pbSaveSettings.clicked.connect(self.comboxboxPressed)
+        self.pbSaveSettings.clicked.connect(self.saveSelectedProjects)
 
         # Load button
         self.pbLoad = QtWidgets.QPushButton(self.tabSettings)
@@ -116,6 +119,7 @@ class Ui_MainWindow(object):
         self.lblStatusSettings = QtWidgets.QLabel(self.tabSettings)
         self.lblStatusSettings.setGeometry(QtCore.QRect(200, 456, 101, 31))
         self.lblStatusSettings.setObjectName("lblStatusSettings")
+        self.lblStatusSettings.setStyleSheet('color: green')
         self.tabWidget.addTab(self.tabSettings, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -156,32 +160,35 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabSettings), _translate("MainWindow", "Settings"))
 
     def loadSettingsTab(self):
+        self.setStatusSettings('Loading ...')
         self.testlinkApi = TestlinkApiService()
         self.testcollabApi = TestCollabApiService()
-        self.tcProjects = self.testcollabApi.getTestCollabProjects()
-        for data in self.tcProjects:
+        projects = self.testcollabApi.getProjects()
+        for data in projects:
             id = data['Project']['id']
             name = data['Project']['name']
             self.cbTestCollabProjects.addItem('{0}-{1}'.format(id, name))
+        projects = self.testlinkApi.getProjects()
+        for project in projects:
+            prefix = project['prefix']
+            name = project['name']
+            self.cbTeslinkProjects.addItem('{0}-{1}'.format(prefix, name))
+        self.setStatusSettings('Loaded!')
 
-    def comboxboxPressed(self):
+    def saveSelectedProjects(self):
         testCollabValue = self.cbTestCollabProjects.currentText()
         testlinkValue = self.cbTeslinkProjects.currentText()
         print('Testcollab: ', testCollabValue)
         print('Testlink: ', testlinkValue)
         self.testcollabApi.setProjectId(testCollabValue.split('-')[0])
+        self.testlinkApi.setPrefix(testlinkValue.split('-')[0])
+        self.setStatusSettings('Settings Saved!')
 
     def searchTestCaseClicked(self):
         query = self.leTestCaseName.text()
-
-        if query == "":
-            query = self.leTestlinkId.text()
-            print('query testlink ', query)
-            test_case = self.testlinkApi.getTestCaseIDByName(query)
-        else:
-            test_case = self.testcollabApi.getTestCaseByTitle(query)
-            self.loadTestCase(test_case)
-
+        test_case = self.testcollabApi.getTestCaseByTitle(query)
+        self.loadTestCase(test_case)
+        self.leTestlinkId.setText(self.testlinkApi.getTestCaseIDByName(query))
 
     def loadTestCase(self, data):
         try:
@@ -194,18 +201,34 @@ class Ui_MainWindow(object):
             self.expectedResults = test_case['expected_result']
             self.pteSteps.textCursor().insertText(self.steps)
             self.pteExpectedResults.textCursor().insertText(self.expectedResults)
-            self.ptePreconditions.textCursor().insertText(self.description)
+            self.pteDescription.textCursor().insertText(self.description)
         except:
             print('err load test case: ', data)
 
-
-    def updateTestCollab(self):
+    def getFormData(self):
         self.title = self.leTestCaseName.text()
         self.description = self.pteDescription.toPlainText()
         self.steps = self.pteSteps.toPlainText()
         self.expectedResults = self.pteExpectedResults.toPlainText()
         self.criteria = self.pteAcceptanceCriteria.toPlainText()
         self.preconditions = self.ptePreconditions.toPlainText()
+        self.testlinkId = self.leTestlinkId.text()
+
+    def updateTestlink(self):
+        self.getFormData()
+        data = {
+            'testcasename': self.title,
+            'summary': self.description,
+            'actions': self.steps.split('\n\n'),
+            'results': self.expectedResults.split('\n\n'),
+            'preconditions': self.preconditions,
+            'externalid': self.testlinkId
+        }
+        self.testlinkApi.updateTestCase(data)
+        self.clearForm()
+
+    def updateTestCollab(self):
+        self.getFormData()
         data = {"data": {"TestCase": {}}}
         data["data"]["TestCase"]["suite_id"] = self.suiteId
         data["data"]["TestCase"]["title"] = self.title
@@ -215,10 +238,12 @@ class Ui_MainWindow(object):
         data["data"]["TestCase"]["priority"] = 1
         data["data"]["TestCase"]["criteria"] = self.criteria
         data["data"]["TestCase"]["preconditions"] = self.preconditions
+        data["data"]["TestCase"]["testlinkid"] = self.testlinkId
+
         self.testcollabApi.setTestCaseId(self.testCaseId)
-        self.testcollabApi.setSuiteId(self.suiteId)g
+        self.testcollabApi.setSuiteId(self.suiteId)
         self.testcollabApi.updateTestCase(data)
-        self.clearForm()
+
 
     def clearForm(self):
         self.pteSteps.clear()
@@ -229,6 +254,9 @@ class Ui_MainWindow(object):
         self.leTestCaseName.clear()
         self.leTestCaseName.clear()
         self.pteAcceptanceCriteria.clear()
+
+    def setStatusSettings(self, status):
+        self.lblStatusSettings.setText(status)
 
 
 if __name__ == "__main__":

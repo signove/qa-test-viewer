@@ -12,7 +12,7 @@ class TestCollabApiService():
         self.baseUrl = 'otunac.app.testcollab.com'
         print('init TestCollab ...')
 
-    def getTestCollabProjects(self):
+    def getProjects(self):
         print('Requesting to TestCollab...')
         project_url = 'https://{0}/index.php/projects/index.json?API_KEY={1}'.format(self.baseUrl, self.apiKey)
         r = requests.get(project_url).json()
