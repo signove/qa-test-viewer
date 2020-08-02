@@ -24,7 +24,6 @@ class TestlinkApiService():
 
     def updateTestCase(self, data):
         try:
-            print(data)
             actions = data['actions']
             results = data['results']
             steps = []
@@ -35,7 +34,8 @@ class TestlinkApiService():
             external_id = data['externalid']
             summary = data['summary']
             preconditions = data['preconditions']
-            self.tls.updateTestCase(external_id, testcasename=testcasename, summary=summary, preconditions=preconditions, steps=steps, user=user)
+            r = self.tls.updateTestCase(external_id, testcasename=testcasename, summary=summary, preconditions=preconditions, steps=steps, user=user)
+            print(r)
         except TLResponseError as err:
             print('err updating test case ', data)
             print(err)

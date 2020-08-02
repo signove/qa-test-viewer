@@ -1,9 +1,12 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
+
+# -*- coding: utf-8 -*-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from api.testcollabapi import TestCollabApiService
 from api.testlinkapi import TestlinkApiService
+
 
 
 class Ui_MainWindow(object):
@@ -67,7 +70,7 @@ class Ui_MainWindow(object):
         self.pbSyncTestlink.setObjectName("pbSyncTestlink")
         self.pbSyncTestlink.clicked.connect(self.updateTestlink)
 
-        # Button Sync Testcollab
+        # Button Sync TestCollab
         self.pbSyncTestCollab = QtWidgets.QPushButton(self.tabTestCaseEditor)
         self.pbSyncTestCollab.setGeometry(QtCore.QRect(10, 470, 101, 25))
         self.pbSyncTestCollab.setObjectName("pbSyncTestCollab")
@@ -79,9 +82,13 @@ class Ui_MainWindow(object):
         self.lblDescription = QtWidgets.QLabel(self.tabTestCaseEditor)
         self.lblDescription.setGeometry(QtCore.QRect(10, 60, 71, 17))
         self.lblDescription.setObjectName("lblDescription")
+
+        # Label sync status
         self.lblSyncStatus = QtWidgets.QLabel(self.tabTestCaseEditor)
         self.lblSyncStatus.setGeometry(QtCore.QRect(220, 470, 81, 21))
         self.lblSyncStatus.setObjectName("lblSyncStatus")
+        self.lblSyncStatus.setStyleSheet('color: green')
+
         self.tabWidget.addTab(self.tabTestCaseEditor, "")
         self.tabSettings = QtWidgets.QWidget()
         self.tabSettings.setObjectName("tabSettings")
@@ -116,10 +123,12 @@ class Ui_MainWindow(object):
         self.pbLoad.setObjectName("pbLoad")
         self.pbLoad.clicked.connect(self.loadSettingsTab)
 
+        # Label settings status
         self.lblStatusSettings = QtWidgets.QLabel(self.tabSettings)
         self.lblStatusSettings.setGeometry(QtCore.QRect(200, 456, 101, 31))
         self.lblStatusSettings.setObjectName("lblStatusSettings")
         self.lblStatusSettings.setStyleSheet('color: green')
+
         self.tabWidget.addTab(self.tabSettings, "")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -185,10 +194,16 @@ class Ui_MainWindow(object):
         self.setStatusSettings('Settings Saved!')
 
     def searchTestCaseClicked(self):
-        query = self.leTestCaseName.text()
-        test_case = self.testcollabApi.getTestCaseByTitle(query)
-        self.loadTestCase(test_case)
-        self.leTestlinkId.setText(self.testlinkApi.getTestCaseIDByName(query))
+        try:
+            query = self.leTestCaseName.text()
+            test_case = self.testcollabApi.getTestCaseByTitle(query)
+            self.loadTestCase(test_case)
+            self.leTestlinkId.setText(self.testlinkApi.getTestCaseIDByName(query))
+            self.setStatusSync('Not sync yet!')
+        except AttributeError as err:
+            print(err)
+            self.setStatusSync('Err, no settings loaded!')
+
 
     def loadTestCase(self, data):
         try:
@@ -216,6 +231,7 @@ class Ui_MainWindow(object):
 
     def updateTestlink(self):
         self.getFormData()
+        self.setStatusSync('Updating ...')
         data = {
             'testcasename': self.title,
             'summary': self.description,
@@ -226,9 +242,11 @@ class Ui_MainWindow(object):
         }
         self.testlinkApi.updateTestCase(data)
         self.clearForm()
+        self.setStatusSync('Sync Testlink ... Ok!')
 
     def updateTestCollab(self):
         self.getFormData()
+        self.setStatusSync('Updating ...')
         data = {"data": {"TestCase": {}}}
         data["data"]["TestCase"]["suite_id"] = self.suiteId
         data["data"]["TestCase"]["title"] = self.title
@@ -243,6 +261,7 @@ class Ui_MainWindow(object):
         self.testcollabApi.setTestCaseId(self.testCaseId)
         self.testcollabApi.setSuiteId(self.suiteId)
         self.testcollabApi.updateTestCase(data)
+        self.setStatusSync('Sync TestCollab ... Ok!')
 
 
     def clearForm(self):
@@ -257,6 +276,9 @@ class Ui_MainWindow(object):
 
     def setStatusSettings(self, status):
         self.lblStatusSettings.setText(status)
+
+    def setStatusSync(self, status):
+        self.lblSyncStatus.setText(status)
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ class TestCollabApiService():
         self.suiteId = None
         self.apiKey = '8d174c2699c49aea592607d48dbea5a3defa2e5f'
         self.baseUrl = 'otunac.app.testcollab.com'
-        print('init TestCollab ...')
+        print('Init TestCollab ... ok')
 
     def getProjects(self):
         print('Requesting to TestCollab...')
@@ -38,7 +38,6 @@ class TestCollabApiService():
         print('Setting suite id: ', self.suiteId)
 
     def updateTestCase(self, data):
-        print('sending ', data)
         headers = {'Content-type': 'application/json'}
         update_url = 'https://{0}/index.php/project/{1}/test_cases/edit/{2}.json?API_KEY={3}'.format(self.baseUrl, self.projectId, self.testCaseId, self.apiKey)
         print('post ', update_url)
