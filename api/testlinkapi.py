@@ -3,7 +3,8 @@ import os
 import testlink
 from testlink.testlinkerrors import TLResponseError
 
-class TestlinkApiService():
+
+class TestlinkApiService:
 
     def __init__(self):
         self.apiKey = 'a16dfe20d95e0aab99b4408a2b0fd8a3'
@@ -19,7 +20,7 @@ class TestlinkApiService():
             self.tlh = testlink.TestLinkHelper()
             self.tls = self.tlh.connect(testlink.TestlinkAPIClient)
             print('Init Testlink API ... ok')
-        except  TLResponseError as err:
+        except TLResponseError as err:
             print(err)
 
     def updateTestCase(self, data):
