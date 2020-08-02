@@ -91,9 +91,13 @@ class Ui_MainWindow(object):
         self.pbClear = QtWidgets.QPushButton(self.tabTestCaseEditor)
         self.pbClear.setGeometry(QtCore.QRect(530, 470, 80, 25))
         self.pbClear.setObjectName("pbClear")
+
+        # Button replace text into action and results
         self.pbReplace = QtWidgets.QPushButton(self.tabTestCaseEditor)
         self.pbReplace.setGeometry(QtCore.QRect(710, 350, 161, 25))
         self.pbReplace.setObjectName("pbReplace")
+        self.pbReplace.clicked.connect(self.replace)
+
         self.leSearchFor = QtWidgets.QLineEdit(self.tabTestCaseEditor)
         self.leSearchFor.setGeometry(QtCore.QRect(710, 180, 161, 25))
         self.leSearchFor.setObjectName("leSearchFor")
@@ -396,6 +400,18 @@ class Ui_MainWindow(object):
 
     def setStatusSync(self, status):
         self.lblSyncStatus.setText(status)
+
+    def replace(self):
+        search_for = self.leSearchFor.text()
+        replace_with = self.leReplaceWith.text()
+        steps = self.pteSteps.toPlainText()
+        results = self.pteExpectedResults.toPlainText()
+        steps = steps.replace(search_for, replace_with)
+        results = results.replace(search_for, replace_with)
+        self.pteSteps.clear()
+        self.pteExpectedResults.clear()
+        self.pteSteps.textCursor().insertText(steps)
+        self.pteExpectedResults.textCursor().insertText(results)
 
 
 if __name__ == "__main__":
