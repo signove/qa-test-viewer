@@ -1,7 +1,7 @@
 # QA-Test-Viewer
 
 A tool for easily update tests cases on Testlink and TestCollab simultaneouly.
-![Settings](demo.png)
+![Settings](demo.gif)
 
 ## Instalation
 
