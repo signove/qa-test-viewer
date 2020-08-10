@@ -1,9 +1,30 @@
 # QA-Test-Viewer
 
-- qa-test-viewer.ui should be opened in Qt Designer;
+A tool for easily update tests cases on Testlink and TestCollab simultaneouly.
+![Settings](demo.png)
 
-- For generate the python file run the command:
-pyuic5 -x qa-test-viewer.ui -o qa-test-viewer-ui.py
+## Instalation
 
-- For generate the test case sync viewer: 
-pyuic5 -x qa-test-case-sync-viewer.ui -o qa-test-case-sync-viewer-ui.py
+> chmod +x install.sh && ./install.sh
+
+## Update the Credentials 
+
+You should replace the access credentials in the files 'api/testcollabapi.py' and
+'api/testlinkapi.py' by your credentials.
+
+## Settings
+![Settings](demo-0.png)
+1. Load the projects;
+2. Select the project on Testlink;
+3. Select the same project to sync on TestCollab;
+4. Save the settings
+
+## Updating a Test Case
+
+![Updating a test case](demo-1.png)
+
+1. Type the Test Case name;
+2. Click on the button 'Search';
+3. Edit the 'actions' and 'results' each one separated by one newline;
+4. Click on the button 'Sync TestCollab';
+5. Click on the button 'Sync Testlink'.

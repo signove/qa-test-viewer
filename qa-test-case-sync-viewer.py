@@ -406,12 +406,27 @@ class Ui_MainWindow(object):
         replace_with = self.leReplaceWith.text()
         steps = self.pteSteps.toPlainText()
         results = self.pteExpectedResults.toPlainText()
+        description = self.pteDescription.toPlainText()
+        criteria = self.pteAcceptanceCriteria.toPlainText()
+        pre_condition = self.ptePreconditions.toPlainText()
+
         steps = steps.replace(search_for, replace_with)
         results = results.replace(search_for, replace_with)
+        description = description.replace(search_for, replace_with)
+        criteria = criteria.replace(search_for, replace_with)
+        pre_condition = pre_condition.replace(search_for, replace_with)
+
         self.pteSteps.clear()
         self.pteExpectedResults.clear()
+        self.pteDescription.clear()
+        self.pteAcceptanceCriteria.clear()
+        self.ptePreconditions.clear()
+
         self.pteSteps.textCursor().insertText(steps)
         self.pteExpectedResults.textCursor().insertText(results)
+        self.pteDescription.textCursor().insertText(description)
+        self.pteAcceptanceCriteria.textCursor().insertText(criteria)
+        self.ptePreconditions.textCursor().insertText(pre_condition)
 
 
 if __name__ == "__main__":
