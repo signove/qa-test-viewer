@@ -7,10 +7,8 @@ from testlink.testlinkerrors import TLResponseError
 class TestlinkApiService:
 
     def __init__(self):
-        self.apiKey = 'a16dfe20d95e0aab99b4408a2b0fd8a3'
-        self.baseUrl = 'https://testlink.cpv.signove.com/lib/api/xmlrpc/v1/xmlrpc.php'
-        # self.apiKey = 'bae5852b0e4a8ac7faa16befb5216c2d'
-        # self.baseUrl = 'http://127.0.0.1/testlink/lib/api/xmlrpc/v1/xmlrpc.php'
+        self.apiKey = 'YOUR_TESTLINK_API_KEY_HERE'
+        self.baseUrl = 'YOUR_TESTLINK_BASE_URL_HERE'
         self.prefix = None
         self.externalId = None
         self.internalId = None
@@ -30,7 +28,7 @@ class TestlinkApiService:
             steps = []
             for i, action in enumerate(actions, start=1):
                 steps.append({'step_number': i, 'actions': action, 'expected_results': results[i-1]})
-            user = 'samuel.santos'
+            user = 'YOUR_USERNAME_HERE'
             testcasename = data['testcasename']
             external_id = data['externalid']
             summary = data['summary']

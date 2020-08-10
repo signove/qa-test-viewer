@@ -8,8 +8,8 @@ class TestCollabApiService():
         self.projectId = None
         self.testCaseId = None
         self.suiteId = None
-        self.apiKey = '8d174c2699c49aea592607d48dbea5a3defa2e5f'
-        self.baseUrl = 'otunac.app.testcollab.com'
+        self.apiKey = 'YOUR_TESTCOLLAB_API_HERE'
+        self.baseUrl = 'YOUR_TESTCOLLAB_BASE_URL_HERE'
         print('Init TestCollab ... ok')
 
     def getProjects(self):

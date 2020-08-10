@@ -8,10 +8,15 @@ A tool for easily update Test Cases in 'Testlink' and 'Test Collab' simultaneous
 
 > chmod +x install.sh && ./install.sh
 
+
 ## Update the Credentials 
 
 You should replace the access credentials in the files 'api/testcollabapi.py' and
 'api/testlinkapi.py' by your credentials.
+
+## Running
+
+> ./qa-test-case-sync-viewer.py
 
 ## Settings
 ![Settings](demo-0.png)
