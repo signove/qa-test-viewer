@@ -1,6 +1,7 @@
 # QA-Test-Viewer
 
-A tool for easily update tests cases on Testlink and TestCollab simultaneouly.
+A tool for easily update Test Cases in 'Testlink' and 'Test Collab' simultaneously.
+
 ![Settings](demo.gif)
 
 ## Instalation
@@ -17,7 +18,7 @@ You should replace the access credentials in the files 'api/testcollabapi.py' an
 1. Load the projects;
 2. Select the project on Testlink;
 3. Select the same project to sync on TestCollab;
-4. Save the settings
+4. Save the settings.
 
 ## Updating a Test Case
 
