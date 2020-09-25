@@ -26,15 +26,20 @@ class Ui_MainWindow(object):
         self.pbSearch.setObjectName("pbSearch")
         self.pbSearch.clicked.connect(self.searchTestCaseClicked)
 
+        # line editor testlink id
         self.leTestlinkId = QtWidgets.QLineEdit(self.tabTestCaseEditor)
         self.leTestlinkId.setGeometry(QtCore.QRect(360, 30, 231, 25))
         self.leTestlinkId.setObjectName("leTestlinkId")
+
         self.lblTestlinkId = QtWidgets.QLabel(self.tabTestCaseEditor)
         self.lblTestlinkId.setGeometry(QtCore.QRect(360, 10, 131, 17))
         self.lblTestlinkId.setObjectName("lblTestlinkId")
+
+        # Line editor test case name
         self.leTestCaseName = QtWidgets.QLineEdit(self.tabTestCaseEditor)
         self.leTestCaseName.setGeometry(QtCore.QRect(10, 30, 341, 25))
         self.leTestCaseName.setObjectName("leTestCaseName")
+
         self.lblTestCaseName = QtWidgets.QLabel(self.tabTestCaseEditor)
         self.lblTestCaseName.setGeometry(QtCore.QRect(10, 10, 151, 17))
         self.lblTestCaseName.setObjectName("lblTestCaseName")
@@ -116,9 +121,13 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tabTestCaseEditor, "")
         self.tabReport = QtWidgets.QWidget()
         self.tabReport.setObjectName("tabReport")
+
+        # QList tests
         self.lwTests = QtWidgets.QListWidget(self.tabReport)
         self.lwTests.setGeometry(QtCore.QRect(10, 40, 691, 421))
         self.lwTests.setObjectName("lwTests")
+        self.lwTests.itemClicked.connect(self.onSelectTestCase)
+
         self.pbPass = QtWidgets.QPushButton(self.tabReport)
         self.pbPass.setGeometry(QtCore.QRect(10, 470, 80, 25))
         self.pbPass.setObjectName("pbPass")
@@ -140,9 +149,13 @@ class Ui_MainWindow(object):
         self.chboxBlocked = QtWidgets.QCheckBox(self.tabReport)
         self.chboxBlocked.setGeometry(QtCore.QRect(270, 10, 82, 23))
         self.chboxBlocked.setObjectName("chboxBlocked")
+
+        # Edit push button
         self.pbEdit = QtWidgets.QPushButton(self.tabReport)
         self.pbEdit.setGeometry(QtCore.QRect(620, 470, 80, 25))
         self.pbEdit.setObjectName("pbEdit")
+        self.pbEdit.clicked.connect(self.onEditTestCase)
+
         self.lblTotalTestCases = QtWidgets.QLabel(self.tabReport)
         self.lblTotalTestCases.setGeometry(QtCore.QRect(710, 40, 151, 17))
         self.lblTotalTestCases.setObjectName("lblTotalTestCases")
@@ -158,15 +171,20 @@ class Ui_MainWindow(object):
         self.lblBlocked = QtWidgets.QLabel(self.tabReport)
         self.lblBlocked.setGeometry(QtCore.QRect(710, 160, 171, 17))
         self.lblBlocked.setObjectName("lblBlocked")
+
         self.tabWidget.addTab(self.tabReport, "")
         self.tabSettings = QtWidgets.QWidget()
         self.tabSettings.setObjectName("tabSettings")
         self.gbTestlink = QtWidgets.QGroupBox(self.tabSettings)
         self.gbTestlink.setGeometry(QtCore.QRect(10, 10, 321, 431))
         self.gbTestlink.setObjectName("gbTestlink")
+
+        # Combobox testlink projects
         self.cbTeslinkProjects = QtWidgets.QComboBox(self.gbTestlink)
         self.cbTeslinkProjects.setGeometry(QtCore.QRect(10, 50, 301, 25))
         self.cbTeslinkProjects.setObjectName("cbTeslinkProjects")
+        self.cbTeslinkProjects.currentTextChanged.connect(self.onProjectChanged)
+
         self.lblTestlinkProject = QtWidgets.QLabel(self.gbTestlink)
         self.lblTestlinkProject.setGeometry(QtCore.QRect(10, 30, 81, 17))
         self.lblTestlinkProject.setObjectName("lblTestlinkProject")
@@ -179,33 +197,49 @@ class Ui_MainWindow(object):
         self.lblTestlinkBuild = QtWidgets.QLabel(self.gbTestlink)
         self.lblTestlinkBuild.setGeometry(QtCore.QRect(10, 210, 31, 17))
         self.lblTestlinkBuild.setObjectName("lblTestlinkBuild")
+
+        # combobox plans
         self.cbTestlinkPlans = QtWidgets.QComboBox(self.gbTestlink)
         self.cbTestlinkPlans.setGeometry(QtCore.QRect(10, 110, 301, 25))
         self.cbTestlinkPlans.setObjectName("cbTestlinkPlans")
+        self.cbTestlinkPlans.currentTextChanged.connect(self.onPlanChanged)
+
+        # Combobox platforms
         self.cbTestlinkPlatforms = QtWidgets.QComboBox(self.gbTestlink)
         self.cbTestlinkPlatforms.setGeometry(QtCore.QRect(10, 170, 301, 25))
         self.cbTestlinkPlatforms.setObjectName("cbTestlinkPlatforms")
+        self.cbTestlinkPlatforms.currentTextChanged.connect(self.onPlatformChanged)
+
+        # Combobox builds
         self.cbTestlinkBuilds = QtWidgets.QComboBox(self.gbTestlink)
         self.cbTestlinkBuilds.setGeometry(QtCore.QRect(10, 230, 301, 25))
         self.cbTestlinkBuilds.setObjectName("cbTestlinkBuilds")
+
+        # Combobox suites
         self.cbTestlinkTopSuites = QtWidgets.QComboBox(self.gbTestlink)
         self.cbTestlinkTopSuites.setGeometry(QtCore.QRect(10, 290, 301, 25))
         self.cbTestlinkTopSuites.setObjectName("cbTestlinkTopSuites")
+
         self.label = QtWidgets.QLabel(self.gbTestlink)
         self.label.setGeometry(QtCore.QRect(10, 270, 131, 17))
         self.label.setObjectName("label")
         self.gbTestCollab = QtWidgets.QGroupBox(self.tabSettings)
         self.gbTestCollab.setGeometry(QtCore.QRect(350, 10, 341, 431))
         self.gbTestCollab.setObjectName("gbTestCollab")
+
+        # combobox testcollab project
         self.cbTestCollabProjects = QtWidgets.QComboBox(self.gbTestCollab)
         self.cbTestCollabProjects.setGeometry(QtCore.QRect(10, 50, 321, 25))
         self.cbTestCollabProjects.setObjectName("cbTestCollabProjects")
         self.lblTestCollabProject = QtWidgets.QLabel(self.gbTestCollab)
         self.lblTestCollabProject.setGeometry(QtCore.QRect(10, 30, 71, 17))
         self.lblTestCollabProject.setObjectName("lblTestCollabProject")
+
+        # combobox unknown
         self.comboBox_4 = QtWidgets.QComboBox(self.gbTestCollab)
         self.comboBox_4.setGeometry(QtCore.QRect(10, 110, 321, 25))
         self.comboBox_4.setObjectName("comboBox_4")
+
         self.lblTestCollabSuite = QtWidgets.QLabel(self.gbTestCollab)
         self.lblTestCollabSuite.setGeometry(QtCore.QRect(10, 90, 54, 17))
         self.lblTestCollabSuite.setObjectName("lblTestCollabSuite")
@@ -289,21 +323,81 @@ class Ui_MainWindow(object):
         self.pbLoad.setText(_translate("MainWindow", "Load"))
         self.lblStatusSettings.setText(_translate("MainWindow", "Not Loaded Yet !"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabSettings), _translate("MainWindow", "Settings"))
+
     def loadSettingsTab(self):
-        self.setStatusSettings('Loading ...')
+        self.setStatusSettings('Loading...')
         self.testlinkApi = TestlinkApiService()
         self.testcollabApi = TestCollabApiService()
         projects = self.testcollabApi.getProjects()
+        self.cbTeslinkProjects.clear()
+        self.cbTestCollabProjects.clear()
         for data in projects:
             id = data['Project']['id']
             name = data['Project']['name']
-            self.cbTestCollabProjects.addItem('{0}-{1}'.format(id, name))
+            self.cbTestCollabProjects.addItem(f'{id}-{name}')
         projects = self.testlinkApi.getProjects()
         for project in projects:
+            id = project['id']
             prefix = project['prefix']
             name = project['name']
-            self.cbTeslinkProjects.addItem('{0}-{1}'.format(prefix, name))
+            self.cbTeslinkProjects.addItem(f'{id}-{prefix}-{name}')
         self.setStatusSettings('Loaded!')
+
+    def onProjectChanged(self, value):
+        try:
+            project_id = int(value.split('-')[0])
+            self.loadPlans(project_id)
+            self.loadPlatforms(project_id)
+        except ValueError as err:
+            print(f'invalid value: {value}, {err}')
+
+    def onPlanChanged(self, value):
+        try:
+            plan_id = int(value.split('-')[0])
+            self.testlinkApi.setPlanId(plan_id)
+        except ValueError as err:
+            print(f'invalid value: {value}, {err}')
+
+    def onPlatformChanged(self, value):
+        try:
+            platform_id = int(value.split('-')[0])
+            self.testlinkApi.setPlatformId(platform_id)
+        except ValueError as err:
+            print(f'invalid value: {value}, {err}')
+
+    def onSelectTestCase(self, item):
+        print(f'test case selected: {item.text()}')
+        test_name = item.text().split('-')[2]
+        self.leTestCaseName.setText(test_name)
+
+    def onEditTestCase(self):
+        self.searchTestCaseClicked()
+        self.tabWidget.setCurrentIndex(0)
+
+
+    def loadPlans(self, project_id):
+        plans = self.testlinkApi.getProjectTestPlans(project_id)
+        self.cbTestlinkPlans.clear()
+        for plan in plans:
+            id = plan['id']
+            name = plan['name']
+            self.cbTestlinkPlans.addItem(f'{id}-{name}')
+
+    def loadPlatforms(self, project_id):
+        platforms = self.testlinkApi.getProjectPlatforms(project_id)
+        self.cbTestlinkPlatforms.clear()
+        for platform in platforms:
+            id = platform['id']
+            name = platform['name']
+            self.cbTestlinkPlatforms.addItem(f'{id}-{name}')
+
+    def loadTestCases(self):
+        test_cases = self.testlinkApi.getTests()
+        #print(testcases)
+        for test in test_cases:
+            prefix = test['full_external_id']
+            name = test['tcase_name']
+            self.lwTests.addItem(f'{prefix}-{name}')
 
     def saveSelectedProjects(self):
         testCollabValue = self.cbTestCollabProjects.currentText()
@@ -311,8 +405,11 @@ class Ui_MainWindow(object):
         print('Testcollab: ', testCollabValue)
         print('Testlink: ', testlinkValue)
         self.testcollabApi.setProjectId(testCollabValue.split('-')[0])
-        self.testlinkApi.setPrefix(testlinkValue.split('-')[0])
+        project_id = testlinkValue.split('-')[0]
+        self.testlinkApi.setPrefix(testlinkValue.split('-')[1])
+        self.testlinkApi.setProjectId(project_id)
         self.setStatusSettings('Settings Saved!')
+        self.loadTestCases()
 
     def searchTestCaseClicked(self):
         try:
@@ -363,7 +460,7 @@ class Ui_MainWindow(object):
         }
         self.testlinkApi.updateTestCase(data)
         self.clearForm()
-        self.setStatusSync('Sync Testlink ... Ok!')
+        self.setStatusSync('Sync Testlink Ok!')
 
     def updateTestCollab(self):
         self.getFormData()
